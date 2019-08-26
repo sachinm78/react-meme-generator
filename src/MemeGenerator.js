@@ -9,6 +9,7 @@ class MemeGenerator extends Component {
             randomImg: "http://i.imgflip.com/1bij.jpg",
             allMemeImgs: []
         }
+        this.handleChange = this.handleChange.bind(this)
     }
     
     componentDidMount() {
@@ -16,15 +17,14 @@ class MemeGenerator extends Component {
             .then(response => response.json())
             .then(response => {
                 const {memes} = response.data
-                console.log(memes[0])
                 this.setState({ allMemeImgs: memes })
             })
     }
-    
-    /**
-     * Create the onChagne handler method
-     * It should update the corresponding state on every change of the input box
-     */
+     
+    handleChange(event) {
+        const {name, value} = event.target
+        this.setState({ [name]: value })
+    }
     
     render() {
         return (
@@ -35,18 +35,23 @@ class MemeGenerator extends Component {
                         name="topText"
                         placeholder="Top Text"
                         value={this.state.topText}
-                        // onChange={???}
+                        onChange={this.handleChange}
                     /> 
                     <input 
                         type="text"
                         name="bottomText"
                         placeholder="Bottom Text"
                         value={this.state.bottomText}
-                        // onChange={???}
+                        onChange={this.handleChange}
                     /> 
                 
                     <button>Gen</button>
                 </form>
+                <div className="meme">
+                    <img src={this.state.randomImg} alt="" />
+                    <h2 className="top">{this.state.topText}</h2>
+                    <h2 className="bottom">{this.state.bottomText}</h2>
+                </div>
             </div>
         )
     }
